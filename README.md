@@ -3,9 +3,6 @@ Orderflow — Custom Dashboard Builder & Order Management
 A full-stack web application for managing customer orders and building
 customizable analytics dashboards with real-time data visualization.
 
- Live Demo
-
-> Coming soon — deploying on Vercel + Render
 
 Features
 
