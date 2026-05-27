@@ -25,6 +25,7 @@ app.use((err, req, res, next) => {
 app.get('/', (req, res) => {
   res.send('Backend running');
 });
+
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB connected:', MONGO_URI);
