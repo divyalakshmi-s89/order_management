@@ -1,6 +1,5 @@
 const router = require('express').Router();
-const Order  = require('../models/Order');
-
+const Order = require('../models/orderModel');
 router.get('/', async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
