@@ -85,8 +85,8 @@ export default function BuilderPage() {
 
   const onLayoutChange = useCallback((newLayout) => {
     setLayouts(newLayout);
-    setWidgets(prev => prev.map(w => {
-      const l = newLayout.find(n => n.i === w.id);
+setWidgets(prev => (prev || []).map(w => {
+        const l = newLayout.find(n => n.i === w.id);
       if (!l) return w;
       return { ...w, layout: { ...w.layout, x:l.x, y:l.y, w:l.w, h:l.h } };
     }));
@@ -176,8 +176,9 @@ export default function BuilderPage() {
             <F label="Product">
               <select value={filters.product} onChange={e=>setFilters(f=>({...f,product:e.target.value}))} className="field" style={{ padding:'5px 8px', fontSize:'.78rem', minWidth:130 }}>
                 <option value="">All Products</option>
-                {products.map(p=><option key={p} value={p}>{p}</option>)}
-              </select>
+{(products || []).map(p => (
+  <option key={p} value={p}>{p}</option>
+))}              </select>
             </F>
             <div style={{ paddingTop:17 }}>
               <button className="btn btn-primary" style={{ padding:'5px 12px', fontSize:'.78rem' }} onClick={applyFilters}>Apply</button>
@@ -226,8 +227,8 @@ export default function BuilderPage() {
               compactType="vertical"
               preventCollision={false}
             >
-              {widgets.map(w => (
-                <div key={w.id} style={{ borderRadius:12, overflow:'visible' }}>
+{(widgets || []).map(w => (
+                  <div key={w.id} style={{ borderRadius:12, overflow:'visible' }}>
                   <div className="widget-card" style={{ height:'100%' }}>
                     {/* Delete button — always visible in builder */}
                     <button

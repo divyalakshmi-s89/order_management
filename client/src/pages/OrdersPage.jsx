@@ -29,8 +29,10 @@ export default function OrdersPage() {
   useEffect(() => { fetchOrders(); }, [fetchOrders]);
 
   // Unique products from current data
-  const products = useMemo(() => [...new Set(orders.map(o => o.product))].sort(), [orders]);
-
+const products = useMemo(
+  () => [...new Set((orders || []).map(o => o.product))].sort(),
+  [orders]
+);
   // Instant computed filtering — no API call
   const filtered = useMemo(() => {
     let r = [...orders].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));

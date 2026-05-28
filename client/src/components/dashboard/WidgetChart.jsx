@@ -71,8 +71,7 @@ function SettingsPanel({ config, widgetType, anchorEl, onApply, onClose }) {
         {label}
       </label>
       <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
-        {options.map(o => (
-          <button
+{(options || []).map(o => (          <button
             key={o.v}
             onClick={() => set(fieldKey, o.v)}
             style={{

@@ -55,13 +55,11 @@ export default function DashboardPage() {
 
   const applyFilters = () => setApplied({ ...filters });
   const clearFilters = () => { setFilters({status:'',days:'',product:''}); setApplied({status:'',days:'',product:''}); };
-
-  const readonlyLayout = widgets.map(w => ({ i:w.id, x:w.layout.x, y:w.layout.y, w:w.layout.w, h:w.layout.h, static:true }));
+const readonlyLayout = (widgets || []).map(w => ({ i:w.id, x:w.layout.x, y:w.layout.y, w:w.layout.w, h:w.layout.h, static:true }));
 
   const doExport = () => {
-    const rows = widgets.map(w => {
-      const d = aggregate(orders, w.config.field, w.config.aggregation, w.config.groupBy);
-      return { title:w.config.title||w.type, type:w.type, field:w.config.field, aggregation:w.config.aggregation, groupBy:w.config.groupBy, value:d.map(r=>`${r.name}: ${r.value}`).join(' | ') };
+const rows = (widgets || []).map(w => {      const d = aggregate(orders, w.config.field, w.config.aggregation, w.config.groupBy);
+      return { title:w.config.title||w.type, type:w.type, field:w.config.field, aggregation:w.config.aggregation, groupBy:w.config.groupBy, value:(d || []).map(r=>`${r.name}: ${r.value}`).join(' | ') };
     });
     exportDashboard(rows);
     toast.success('Dashboard exported');
@@ -128,8 +126,9 @@ export default function DashboardPage() {
           <F label="Product">
             <select value={filters.product} onChange={e=>setFilters(f=>({...f,product:e.target.value}))} className="field" style={{ minWidth:160 }}>
               <option value="">All Products</option>
-              {products.map(p=><option key={p} value={p}>{p}</option>)}
-            </select>
+{(products || []).map(p => (
+  <option key={p} value={p}>{p}</option>
+))}            </select>
           </F>
           <button className="btn btn-primary" onClick={applyFilters}>Apply Filters</button>
           <button className="btn btn-secondary" onClick={clearFilters}>Clear</button>
@@ -156,8 +155,8 @@ export default function DashboardPage() {
             isDraggable={false} isResizable={false}
             margin={[14, 14]} containerPadding={[0, 0]}
           >
-            {widgets.map(w => (
-              <div key={w.id}>
+{(widgets || []).map(w => (
+                <div key={w.id}>
                 <div className="widget-card">
                   <WidgetChart widget={w} filters={applied} isBuilder={false}/>
                 </div>
