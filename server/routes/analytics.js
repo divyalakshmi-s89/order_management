@@ -1,6 +1,5 @@
 const router = require('express').Router();
-const Order  = require('../models/Order');
-
+const Order = require('../models/orderModel');
 function buildMatch(q) {
   const match = {};
   if (q.status && q.status !== '')  match.status  = q.status;
