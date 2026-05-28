@@ -21,8 +21,13 @@ export default function OrdersPage() {
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
-    try { const r = await ordersAPI.getAll(); setOrders(r.data); }
-    catch (e) { toast.error(e.message); }
+try {
+  const r = await ordersAPI.getAll();
+  setOrders(Array.isArray(r.data) ? r.data : []);
+}
+catch (e) {
+  toast.error(e.message);
+}
     finally   { setLoading(false); }
   }, [toast]);
 
@@ -35,8 +40,9 @@ const products = useMemo(
 );
   // Instant computed filtering — no API call
   const filtered = useMemo(() => {
-    let r = [...orders].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-    if (filters.customerName) r = r.filter(o => o.customerName.toLowerCase().includes(filters.customerName.toLowerCase()));
+let r = [...(orders || [])].sort((a,b) =>
+  new Date(b.createdAt) - new Date(a.createdAt)
+);    if (filters.customerName) r = r.filter(o => o.customerName.toLowerCase().includes(filters.customerName.toLowerCase()));
     if (filters.product)      r = r.filter(o => o.product === filters.product);
     if (filters.status)       r = r.filter(o => o.status === filters.status);
     if (filters.days) {
