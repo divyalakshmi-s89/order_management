@@ -1,7 +1,7 @@
 import Papa from 'papaparse';
 export function downloadCSV(data,filename,cols,headers={}){
   if(!data||!data.length) return;
-  const rows=data.map(r=>{
+  const rows=(data || []).map(r=>{
     const o={};
     cols.forEach(c=>{ o[headers[c]||c]=r[c]??''; });
     return o;

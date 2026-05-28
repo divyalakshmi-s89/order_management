@@ -292,7 +292,10 @@ export default function WidgetChart({ widget, filters, isBuilder }) {
     fetchData(newCfg, filtersRef.current); // fetch with new cfg explicitly
   }, [fetchData, widget]);
 
-  const chartData = data.map(d => ({ name: d._id ?? d.name ?? 'Unknown', value: d.value ?? 0 }));
+const chartData = (data || []).map(d => ({
+  name: d._id ?? d.name ?? 'Unknown',
+  value: d.value ?? 0
+}));
   const chartType = localConfig.chartType || type;
 
   // ── KPI Card ────────────────────────────────────────────────
@@ -409,7 +412,7 @@ export default function WidgetChart({ widget, filters, isBuilder }) {
 // ─────────────────────────────────────────────────────────────
 function ChartRenderer({ type, data }) {
   const margin = { top:6, right:14, left:0, bottom:6 };
-  const names  = data.map(d => d.name);
+  const names  = (data || []).map(d => d.name);
   const tickFontSize = names.length > 7 ? 9 : 11;
 
   if (type === 'pie') {
@@ -421,7 +424,7 @@ function ChartRenderer({ type, data }) {
             cx="50%" cy="48%" outerRadius="65%" innerRadius="32%"
             paddingAngle={2}
           >
-            {data.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]}/>)}
+            {(data || []).map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]}/>)}
           </Pie>
           <Tooltip
             formatter={v => [typeof v === 'number' && v > 100 ? fmt$(v) : fmtN(v)]}
@@ -434,7 +437,7 @@ function ChartRenderer({ type, data }) {
   }
 
   if (type === 'scatter') {
-    const sd = data.map((d, i) => ({ x: i + 1, y: d.value, name: d.name }));
+    const sd = (data || []).map((d, i) => ({ x: i + 1, y: d.value, name: d.name }));
     return (
       <ResponsiveContainer width="100%" height="100%">
         <ScatterChart margin={margin}>
@@ -495,7 +498,7 @@ function ChartRenderer({ type, data }) {
         <YAxis {...AXIS}/>
         <Tooltip content={<ChartTooltip/>}/>
         <Bar dataKey="value" radius={[5,5,0,0]}>
-          {data.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]}/>)}
+          {(data || []).map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]}/>)}
         </Bar>
       </BarChart>
     </ResponsiveContainer>
