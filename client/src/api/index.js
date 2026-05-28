@@ -1,6 +1,8 @@
 import axios from 'axios';
-const api = axios.create({ baseURL: '/api', timeout: 10000 });
-api.interceptors.response.use(
+const api = axios.create({
+  baseURL: 'https://order-management-95t6.onrender.com/api',
+  timeout: 10000
+});api.interceptors.response.use(
   r => r.data,
   e => Promise.reject(new Error(e.response?.data?.error || e.message || 'Request failed'))
 );
